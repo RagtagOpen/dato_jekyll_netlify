@@ -1,4 +1,4 @@
-ruby '2.5.0'
+ruby '2.4.0'
 source "https://rubygems.org"
 
 # Hello! This is where you manage which Jekyll version is used to run.
