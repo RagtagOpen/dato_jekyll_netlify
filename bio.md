@@ -1,0 +1,6 @@
+---
+layout: page
+---
+![alt text]("{{site.data.candidate.photo}} {{site.data.candidate.first_name}} {{site.data.candidate.last_name}})
+
+{{site.data.candidate.bio | markdownify}}
