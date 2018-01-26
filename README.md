@@ -19,11 +19,19 @@ It's also possible to deploy by pushing commits to Github.
 
 ## Developer Setup
 
+### Prerequisites
+
+* Ruby 2.4.0
+
+### Install the dependencies
+
 Download the repo. Run:
 
 ```
 bundle install
 ```
+
+### Configuration
 
 Login to DatoCMS, password available from Spike in Slack. Go to the
 Admin area, navigate to **Settings -> API tokens*. Copy the *Read-only
@@ -32,6 +40,8 @@ API token*, and add it to the `.env` file
 ```
 echo DATO_API_TOKEN=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX >> .env
 ```
+
+### Running Locally
 
 Download the data stored in DatoCMS with:
 
