@@ -60,3 +60,18 @@ You can view the site at http://127.0.0.1:4000/
 If you edit files the site will automatically be update. If you change
 data in DatoCMS re-run `bundle exec dato dump`, Jekyll will detect the
 update and rebuild.
+
+## Cloning an Existing DatoCMS Configuration
+
+You can copy an existing DatoCMS by running:
+
+```
+setup-dato-cms <SOURCE_API_READ_TOKEN> <DESTINATION_API_READWRITE_TOKEN>
+```
+
+Where *SOURCE_API_READ_TOKEN* is the **Read-only API token** found in
+Admin area, under **Settings -> API tokens** on the existing site and
+*DESTINATION_API_READWRITE_TOKEN* this **Full-access API token** found
+under **Settings -> API tokens** on the new site.
+
+This copies only the models, not the content.

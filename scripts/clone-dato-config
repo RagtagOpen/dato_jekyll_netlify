@@ -1,0 +1,48 @@
+#!/usr/bin/env ruby
+ENV['RACK_ENV'] ||= 'development'
+
+require 'bundler'
+Bundler.require(:default, ENV['RACK_ENV'].to_sym)
+if %w[test development].include? ENV['RACK_ENV']
+  require 'dotenv/load'
+  Dotenv.load
+end
+
+unless ARGV.count == 2
+  abort "Usage: setup-dato-cms <SOURCE_API_READ_TOKEN> <DESTINATION_API_READWRITE_TOKEN>"
+end
+
+SOURCE_API_TOKEN = ARGV.shift
+DESTINATION_API_TOKEN = ARGV.shift
+
+source = Dato::Site::Client.new(SOURCE_API_TOKEN)
+destination = Dato::Site::Client.new(DESTINATION_API_TOKEN)
+
+mapping = {}
+
+puts "Copying configuration..."
+source.item_types.all.each do |item|
+  id = item.delete('id')
+  field_ids = item.delete('fields')
+  singleton_item = item.delete('singleton_item')
+  puts "Cloning #{item['name']}"
+  new_item = destination.item_types.create(item)
+  new_id = new_item['id']
+  mapping[id] = new_id
+  fields = source.fields.all(id)
+
+  fields.each do |field|
+    field.delete('id')
+    field.delete('item_type')
+    # Remap new nested fields
+    if field['validators'].fetch('rich_text_blocks',nil)
+      new_types = field['validators']['rich_text_blocks']['item_types'].map do |item_id|
+        mapping[item_id]
+      end
+      field['validators']['rich_text_blocks']['item_types'] = new_types
+    end
+    destination.fields.create(new_id,field)
+  end
+end
+
+puts ' Done!'
